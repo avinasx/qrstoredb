@@ -1,0 +1,61 @@
+    @media only screen and (max-width: 480px) {
+        .container {
+            display: block !important;
+        }
+
+    }
+
+
+    .container {
+        display: flex;
+        overflow: auto;
+        min-height: 20em;
+    }
+
+    .container__half {
+        flex: 1;
+    }
+
+    a.button1{
+        display:inline-block;
+        padding:0.2em 1em;
+        border:0.1em solid #FFFFFF;
+        border-radius:0.5em;
+        box-sizing: border-box;
+        text-decoration:none;
+        font-family:'Roboto',sans-serif;
+        font-weight:300;
+        color:#FFFFFF;
+        text-align:center;
+        transition: all 0.2s;
+        background-color:black;
+        }
+        a.button1:hover{
+        color:#000000;
+        border:0.1em solid black;
+        background-color:#FFFFFF;
+        cursor: grab;
+        }
+        @media all and (max-width:30em){
+                 a.button1{
+                display:block;
+                margin:0.4em auto;
+                    }
+        }
+
+        #qrContainer {
+            position: fixed;
+        }
+
+        ol li:hover {
+            background-color: #e9e9f9 ;
+        }
+
+            #watermark
+            {
+            position:fixed;
+            bottom:15em;
+            opacity:0.1;
+            z-index:99;
+            color:black;
+            }        

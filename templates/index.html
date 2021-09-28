@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <title>QrStoreDB</title>
+        <meta name="File server" content="File server">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="{{ url_for('custom_static_js', filename='qrcode.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('custom_static_js', filename='script.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('custom_static_css', filename='style.css') }}"></link>
+        <link rel="stylesheet" href="{{ url_for('custom_static_css', filename='hover.min.css') }}"></link>
+
+    </head>
+    <body>
+    
+        <header align='center'>
+            <h1>QrStoreDB</h3>
+            (for DEMO Purpose Only)
+        </header>
+            <div class="container">
+                <fieldset>
+                    <legend>Item Details</legend>
+                    <ol type="1">
+                    {%- for item in result[0]%}
+                        <li>
+                        {{item}} : {{result[0][item]}}
+                        </li>
+                    {%- endfor %}
+                    </ol>
+                </fieldset>
+            </div>
+        <footer align='center'>
+        <p>&copy;Author: codechari</p>
+        <p><a href="https://codechari.github.io/">codechari.github.io</a></p>
+        </footer>
+        
+    </body>
+</html>
