@@ -4,7 +4,7 @@ import socket
 from flask import Flask, request, jsonify, render_template, send_from_directory
 import qrcode
 from PIL import Image
-import mysql.connector
+#import mysql.connector
 import pyodbc
 
 #get IP
@@ -21,7 +21,7 @@ finally:
 PORT = 8050 #change this to desired port
 # lsof -ti:8000 | xargs kill 
 localFolderDownloads = 'Downloads/QRCODES-DB' #change this to desired directory
-pk = 'col_2' #change this to desired directory
+pk = 'part_no' #change this to desired directory
 
 # web_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', localFolder))
 
@@ -37,31 +37,35 @@ mydb = pyodbc.connect("DRIVER={SQL Server};"
                       "Database=dims-II;"
                       "Trusted_Connection=True;")
 
-cursor = cnxn.cursor()
-cursor.execute("select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no ")
+#cursor = mydb.cursor()
+#cursor.execute("select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no ")
 
 
 def query(pk= False, pkvalue=False):
-  with mydb.cursor(dictionary=True) as cur:
+  with mydb.cursor() as cur:
     if(pkvalue and pk):
-        query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no where a.part_no  = '"+pkvalue+"'"
-    elif(pk):
-        query = "select a.part_no from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
+        query = "select * from items where part_no  = '" + pkvalue + "'"
+    elif (pk):
+        query = "select part_no from items"
     else:
-        query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
+        query = "select * from items"
     print(query);
     cur.execute(query)
-    articles = cur.fetchall()
-  return articles
-
+    #articles = cur.fetchall()
+    results = []
+    columns = [column[0] for column in cur.description]
+    for row in cur.fetchall():
+        print (row)
+        results.append(dict(zip(columns, row)))
+  return results
 
 
 def keyArray():
     arr = [];
     for x in query(pk):
         arr.append(x[pk])
+    print (arr)
     return arr
-
 
 
 
