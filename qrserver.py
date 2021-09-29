@@ -5,6 +5,7 @@ from flask import Flask, request, jsonify, render_template, send_from_directory
 import qrcode
 from PIL import Image
 import mysql.connector
+import pyodbc
 
 #get IP
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -24,22 +25,30 @@ pk = 'col_2' #change this to desired directory
 
 # web_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', localFolder))
 
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="root",
-  database="dims-II"
-)
+# mydb = mysql.connector.connect(
+#   host="localhost",
+#   user="root",
+#   password="root",
+#   database="dims-II"
+# )
+
+mydb = pyodbc.connect("DRIVER={SQL Server};"
+                      "Server=localhost\SQLEXPRESS;"
+                      "Database=dims-II;"
+                      "Trusted_Connection=True;")
+
+cursor = cnxn.cursor()
+cursor.execute("select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no ")
 
 
 def query(pk= False, pkvalue=False):
   with mydb.cursor(dictionary=True) as cur:
     if(pkvalue and pk):
-        query = "SELECT * FROM items where "+pk+" = '"+pkvalue+"'"
+        query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no where a.part_no  = '"+pkvalue+"'"
     elif(pk):
-        query = "SELECT "+pk+" FROM items"
+        query = "select a.part_no from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
     else:
-        query = "SELECT * FROM items"
+        query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
     print(query);
     cur.execute(query)
     articles = cur.fetchall()
