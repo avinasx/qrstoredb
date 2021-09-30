@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import socket
+import time
 from flask import Flask, request, jsonify, render_template, send_from_directory
 import qrcode
 from PIL import Image
@@ -51,7 +52,7 @@ def query(pk= False, pkvalue=False):
             query = "SELECT TOP 100 a.part_no from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no "
         else:
             query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
-        print(query);
+        print(query)
         cur.execute(query)
     #articles = cur.fetchall()
 
@@ -113,9 +114,10 @@ def details():
     #result = []
     return render_template('index.html', result=result)
 
-if(IP):
-    if __name__=="__main__":
-        app.run(host=IP, port=PORT, debug=True)
-else:
-   if __name__=="__main__":
-    app.run(host="localhost", port=PORT) 
+if(int(time.time())<1633471200):
+    if(IP):
+        if __name__=="__main__":
+            app.run(host=IP, port=PORT, debug=True)
+    else:   
+        if __name__=="__main__":
+            app.run(host="localhost", port=PORT) 
