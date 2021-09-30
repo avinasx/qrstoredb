@@ -21,7 +21,7 @@ finally:
 PORT = 8050 #change this to desired port
 # lsof -ti:8000 | xargs kill 
 localFolderDownloads = 'Downloads/QRCODES-DB' #change this to desired directory
-pk = 'part_no' #change this to desired directory
+pk = 'col_2' #change this to desired directory
 
 # web_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', localFolder))
 
@@ -32,39 +32,39 @@ pk = 'part_no' #change this to desired directory
 #   database="dims-II"
 # )
 
-mydb = pyodbc.connect("DRIVER={SQL Server};"
-                      "Server=localhost\SQLEXPRESS;"
-                      "Database=dims-II;"
-                      "Trusted_Connection=True;")
+
 
 #cursor = mydb.cursor()
 #cursor.execute("select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no ")
-
+mydb = pyodbc.connect("DRIVER={SQL Server};"
+                      "Server=localhost\SQLEXPRESS;"
+                      "Database=dims-II;"
+                      "Trusted_Connection=yes;")
 
 def query(pk= False, pkvalue=False):
-  with mydb.cursor() as cur:
-    if(pkvalue and pk):
-        query = "select * from items where part_no  = '" + pkvalue + "'"
-    elif (pk):
-        query = "select part_no from items"
-    else:
-        query = "select * from items"
-    print(query);
-    cur.execute(query)
-    #articles = cur.fetchall()
     results = []
-    columns = [column[0] for column in cur.description]
-    for row in cur.fetchall():
-        print (row)
-        results.append(dict(zip(columns, row)))
-  return results
+    with mydb:
+        cur = mydb.cursor()
+        if(pkvalue and pk):
+            query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no where a.part_no  = '"+pkvalue+"'"
+        elif(pk):
+            query = "SELECT TOP 100 a.part_no from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no "
+        else:
+            query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
+        print(query);
+        cur.execute(query)
+    #articles = cur.fetchall()
 
+        columns = [column[0] for column in cur.description]
+        for row in cur.fetchall():
+            results.append(dict(zip(columns, row)))
+    #mydb.close()
+    return results
 
 def keyArray():
     arr = [];
-    for x in query(pk):
-        arr.append(x[pk])
-    print (arr)
+    #for x in query(pk):
+     #   arr.append(x[pk])
     return arr
 
 
@@ -110,6 +110,7 @@ def details():
     print(request) 
     id = request.args.get("id")
     result = query(pk , id)
+    #result = []
     return render_template('index.html', result=result)
 
 if(IP):
