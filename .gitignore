@@ -1,3 +1,4 @@
 FILES/
 __pycache__/
 qrstoredb/
+.idea/
