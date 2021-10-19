@@ -47,11 +47,11 @@ def query(pk= False, pkvalue=False):
     with mydb:
         cur = mydb.cursor()
         if(pkvalue and pk):
-            query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no where a.part_no  = '"+pkvalue+"'"
+            query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp, c.qty_expect, d.qty_do from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no inner join dbo.duesin_hist c on a.part_no= c.part_no inner join dbo.duesout d on a.part_no= d.part_no where a.part_no  = '"+pkvalue+"'"
         elif(pk):
             query = "SELECT TOP 100 a.part_no from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no "
         else:
-            query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
+            query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp, c.qty_expect, d.qty_do from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no inner join dbo.duesin_hist c on a.part_no= c.part_no inner join dbo.duesout d on a.part_no= d.part_no"
         print(query)
         cur.execute(query)
     #articles = cur.fetchall()
@@ -61,6 +61,8 @@ def query(pk= False, pkvalue=False):
             results.append(dict(zip(columns, row)))
     #mydb.close()
     return results
+
+resolvenamedict = {"nomen1": "NAME","stok_free": "STOCK"}
 
 def keyArray():
     arr = [];
@@ -81,6 +83,9 @@ def index():
 def custom_static_js(filename):
     return send_from_directory(app.root_path + '/custom/js/', filename)
 
+@app.route('/custom/img/<path:filename>')
+def custom_static_img(filename):
+    return send_from_directory(app.root_path + '/custom/img/', filename)
 
 @app.route('/custom/css/<path:filename>')
 def custom_static_css(filename):
@@ -112,7 +117,7 @@ def details():
     id = request.args.get("id")
     result = query(pk , id)
     #result = []
-    return render_template('index.html', result=result)
+    return render_template('index.html', result=result, namearr=resolvenamedict)
 
 if(int(time.time())<1635033599):
     if(IP):

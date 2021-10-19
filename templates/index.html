@@ -14,16 +14,16 @@
     <body>
     
         <header align='center'>
-            <h3>QrStoreDB</h3>
+            <h1><span class="customh1">INVENTORY MANAGEMENT SYSTEM</span></h1>
             (for DEMO Purpose Only)
         </header>
             <div>
                 <fieldset>
-                    <legend>Item Details</legend>
+                    <legend class="customh1">Item Details</legend>
                     <ol type="1">
                     {%- for item in result[0]%}
                         <li>
-                        {{item}} : {{result[0][item]}}
+                        <span class="uppercase">{{namearr.get(item) if namearr.get(item) else item}} </span>: {{result[0][item]}}
                         </li>
                     {%- endfor %}
                     </ol>

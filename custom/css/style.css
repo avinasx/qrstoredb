@@ -51,11 +51,39 @@
             background-color: #e9e9f9 ;
         }
 
-            #watermark
-            {
-            position:fixed;
-            bottom:15em;
-            opacity:0.1;
-            z-index:99;
-            color:black;
-            }        
+        #watermark
+        {
+        position:fixed;
+        bottom:15em;
+        opacity:0.1;
+        z-index:99;
+        color:black;
+        }
+        .uppercase {
+            text-transform: uppercase;
+        }
+        fieldset{
+            /* font-size: 20px; */
+            /* font-family:'Roboto'; */
+            /* font-weight:300; */
+            color:rgb(15, 19, 20);
+            background-color: rgba(247, 242, 242, 0.9);
+            /* opacity:0.5; */
+            }
+        html{
+            background-image: url("/custom/img/background.jpg");
+            background-color: #cccccc;
+            /* opacity: 0.8; */
+            background-repeat: no-repeat;
+            /* background-color: rgba(247, 242, 242, 0.8); */
+            background-size:cover;
+            }
+        .customh1{
+               background-color:whitesmoke;
+               border-radius: 9px;
+               padding: 5px;
+                }
+        /* header{
+            color: black;
+            background-color: white;
+            } */
