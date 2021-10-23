@@ -7,8 +7,9 @@ ON dbo.mpi_file (part_no);
 CREATE INDEX second_index
 ON dbo.stokfile (part_no);
 
-CREATE INDEX third_index
-ON dbo.duesin_hist (part_no);
 
-CREATE INDEX fourth_index
-ON dbo.duesout (part_no);
+ALTER TABLE dbo.mpi_file
+ADD image_url varchar(max);
+
+UPDATE dbo.mpi_file SET image_url = concat('/static/parts/img/',REPLACE(TRIM(part_no), '/', '-'),'.jpg');
+
