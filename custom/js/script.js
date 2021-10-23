@@ -8,7 +8,7 @@ function genQrCode(el){
 
     let qrContainer = document.getElementById('qrContainer');
     qrContainer.innerHTML =""
-    qrContainer.innerHTML =link+"<hr>";
+    qrContainer.innerHTML ="<a target='_blank' href='"+link+"'>See Details</a>"+"<hr>";
 
     new QRCode(qrContainer, link);
 
