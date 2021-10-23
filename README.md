@@ -2,12 +2,14 @@
 ## instructions for image addition:
 ### Requisites:
 1. **Open the SQL server management and run following quearies one by one:**  
- a) ```
+ a)  
+ ```
  ALTER TABLE dbo.mpi_file 
  ADD image_url varchar(max);
  ```  
 
-b) ```
+b)  
+```
 UPDATE dbo.mpi_file SET image_url = concat('/static/parts/img/',REPLACE(TRIM(part_no), '/', '-'),'.jpg');
 ```  
 
