@@ -10,7 +10,7 @@ function genQrCode(el){
     qrContainer.innerHTML =""
     qrContainer.innerHTML ="<a target='_blank' href='"+link+"'>See Details</a>"+"<hr>";
 
-    new QRCode(qrContainer, link);
+    new QRCode(qrContainer, link.replace(" ","%20"));
 
     async function postData(url, data ) {
         // Default options are marked with *
