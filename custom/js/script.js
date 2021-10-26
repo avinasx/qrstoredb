@@ -1,11 +1,16 @@
 function genQrCode(el){
-    let = idVal = document.getElementById("id").value;
-    let link = window.location.href+"details?id="+idVal;
+    let idVal = document.getElementById("id").value;
     if(idVal===""){
         return true;
     }
+    else{
+        idVal=idVal.trim();
+    }
+    
+    let link = window.location.href+"details?id="+idVal;
+    
     console.log(link);
-
+    
     let qrContainer = document.getElementById('qrContainer');
     qrContainer.innerHTML =""
     qrContainer.innerHTML ="<a target='_blank' href='"+link+"'>See Details</a>"+"<hr>";
@@ -34,6 +39,6 @@ function genQrCode(el){
 
     postData('/gen', { link: link , fname: idVal})
     .then(data => {
-        console.log(data); // JSON data parsed by `data.json()` call
+        // console.log(data); // JSON data parsed by `data.json()` call
     });
 }

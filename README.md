@@ -1,22 +1,12 @@
 # qrstoredb
 ## instructions for image addition:
 ### Requisites:
-1. **Open the SQL server management and run following quearies one by one:**  
- a)  
- ```
- ALTER TABLE dbo.mpi_file 
- ADD image_url varchar(max);
- ```  
 
-b)  
-```
-UPDATE dbo.mpi_file SET image_url = concat('/static/parts/img/',REPLACE(TRIM(part_no), '/', '-'),'.jpg');
-```  
-
+1. **Avoid using SPACES and Special character in part no.**
 
 
 2. **Image Folder:**  
-   All images should be saved in this forlder only - ```\qrstoredb\static\parts\img```, where QRSTOREDB is the project folder.  
+   All images should be saved in this forlder only - ```\qrstoredb\static\IMAGES```, where QRSTOREDB is the project folder.  
 
 
 3. **Things need to be taken care of while saving the images of the "Parts":**  

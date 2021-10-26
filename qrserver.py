@@ -7,7 +7,7 @@ from flask import Flask, request, jsonify, render_template, send_from_directory
 import qrcode
 from PIL import Image
 import pyodbc
-    
+
 #get IP
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 try:
@@ -20,22 +20,10 @@ finally:
    
 
 PORT = 8050 #change this to desired port
-# lsof -ti:8000 | xargs kill 
 localFolderDownloads = 'Downloads/QRCODES-DB' #change this to desired directory
 pk = 'col_2' #change this to desired directory
 
-# web_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', localFolder))
 
-# mydb = mysql.connector.connect(
-#   host="localhost",
-#   user="root",
-#   password="root",
-#   database="dims-II"
-# )
-
-
-#cursor = mydb.cursor()
-#cursor.execute("select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no ")
 mydb = pyodbc.connect("DRIVER={SQL Server};"
                       "Server=localhost\SQLEXPRESS;"
                       "Database=dims-II;"
@@ -108,7 +96,7 @@ def gen():
     return {"success" :"true"}
 
 def get_image(part_no):
-    imageBasePath='/static/parts/img/'
+    imageBasePath='/static/IMAGES/'
     part_no.split()
     part_no.replace("/", "-")
     web_dir = os.path.dirname(os.path.realpath(__file__)) #append localdir to localfolder
