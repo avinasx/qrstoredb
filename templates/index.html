@@ -15,23 +15,26 @@
     
         <header align='center'>
             <h1><span class="customh1">INVENTORY MANAGEMENT SYSTEM</span></h1>
-            (for DEMO Purpose Only)
+            <span class="demo">(for DEMO Purpose Only)</span>
         </header>
             <div>
                 <fieldset>
                     <legend class="customh1">Item Details</legend>
+                    {% if image != False %}
+                        <img src= "{{image}}"  width="300" height="300">
+                    {% endif %}   
                     <ol type="1">
-                    {%- for item in result[0]%}
+                    {% for item in result[0] %}
                         <li>
-                        <span class="uppercase">{{namearr.get(item) if namearr.get(item) else item}} </span>: {{result[0][item]}}
-                        </li>
-                    {%- endfor %}
+                            <span class="uppercase">{{namearr.get(item) if namearr.get(item) else item}} </span>: {{result[0][item]}}
+                         </li>
+                    {% endfor %}
                     </ol>
                 </fieldset>
             </div>
         <footer align='center'>
-        <p>&copy;Author: codechari</p>
-        <p><a href="https://codechari.github.io/">codechari.github.io</a></p>
+        <p class="demo">&copy;Author: codechari</p>
+        <p>Designed and developed by <a href="https://codechari.github.io/">codechari.github.io</a></p>
         </footer>
         
     </body>

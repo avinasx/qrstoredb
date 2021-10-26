@@ -9,7 +9,7 @@
     .container {
         display: flex;
         overflow: auto;
-        min-height: 20em;
+        min-height: 25em;
     }
 
     .container__half {
@@ -81,9 +81,14 @@
         .customh1{
                background-color:whitesmoke;
                border-radius: 9px;
-               padding: 2px;
+               padding: 7px;
                 }
-        /* header{
-            color: black;
-            background-color: white;
-            } */
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+            }
+        .demo{
+             display: none;
+            }

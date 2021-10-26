@@ -1,11 +1,11 @@
 from pathlib import Path
+from waitress import serve
 import os
 import socket
 import time
 from flask import Flask, request, jsonify, render_template, send_from_directory
 import qrcode
 from PIL import Image
-#import mysql.connector
 import pyodbc
 
 #get IP
@@ -20,23 +20,10 @@ finally:
    
 
 PORT = 8050 #change this to desired port
-# lsof -ti:8000 | xargs kill 
 localFolderDownloads = 'Downloads/QRCODES-DB' #change this to desired directory
 pk = 'col_2' #change this to desired directory
 
-# web_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', localFolder))
 
-# mydb = mysql.connector.connect(
-#   host="localhost",
-#   user="root",
-#   password="root",
-#   database="dims-II"
-# )
-
-
-
-#cursor = mydb.cursor()
-#cursor.execute("select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no ")
 mydb = pyodbc.connect("DRIVER={SQL Server};"
                       "Server=localhost\SQLEXPRESS;"
                       "Database=dims-II;"
@@ -52,7 +39,7 @@ def query(pk= False, pkvalue=False):
             query = "SELECT TOP 100 a.part_no from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no "
         else:
             query = "select a.cos_sec, a.part_no, a.nomen1, b.stok_free, b.do_total, b.duesin_tot, b.duesin_con, b.mmf, b.msp from dbo.mpi_file a inner join dbo.stokfile b on a.part_no=  b.part_no"
-        print(query)
+
         cur.execute(query)
     #articles = cur.fetchall()
 
@@ -69,8 +56,6 @@ def keyArray():
     #for x in query(pk):
      #   arr.append(x[pk])
     return arr
-
-
 
 app = Flask(__name__)
 
@@ -110,19 +95,38 @@ def gen():
     print('saving')
     return {"success" :"true"}
 
+def get_image(part_no):
+    imageBasePath='/static/IMAGES/'
+    part_no.split()
+    part_no.replace("/", "-")
+    web_dir = os.path.dirname(os.path.realpath(__file__)) #append localdir to localfolder
+    isFile = os.path.exists(web_dir.strip()+imageBasePath+part_no+".jpg") 
+    if  isFile:
+        return imageBasePath+part_no+".jpg"
+    else:
+        return False
 
 @app.route('/details', methods=[ 'GET']) 
 def details():
     print(request) 
     id = request.args.get("id")
+    id.replace("%20", " ")
     result = query(pk , id)
     #result = []
-    return render_template('index.html', result=result, namearr=resolvenamedict)
+    image = get_image(id)
+    return render_template('index.html', result=result, namearr=resolvenamedict, image=image)
+   
 
-if(int(time.time())<1635033599):
+if(int(time.time())<3635033599):
     if(IP):
         if __name__=="__main__":
-            app.run(host=IP, port=PORT, debug=True)
+            # app.run(host=IP, port=PORT, debug=True)
+                print("Serving on: " + str(IP) + ":" + str(PORT))
+                serve(app, host=IP, port=PORT)  
     else:   
         if __name__=="__main__":
-            app.run(host="localhost", port=PORT) 
+            # app.run(host="localhost", port=PORT)
+                print("Serving on: " + "localhost" + ":" + str(PORT))
+                serve(app, host="localhost", port=PORT)
+            
+            
